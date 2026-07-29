@@ -96,7 +96,7 @@ def compact_command(
 
 def main() -> None:
     try:
-        app()
+        app(prog_name="video-tools")
     except RuntimeError as error:
         typer.echo(str(error), err=True)
         raise SystemExit(1) from None

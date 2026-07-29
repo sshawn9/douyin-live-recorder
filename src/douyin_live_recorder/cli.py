@@ -33,4 +33,4 @@ def record(
 
 
 def main() -> None:
-    app()
+    app(prog_name="douyin-live-recorder")
