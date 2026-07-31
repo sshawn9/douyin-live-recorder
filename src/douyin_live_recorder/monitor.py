@@ -29,6 +29,8 @@ async def monitor(data: DouyinLiveData) -> None:
             is_live = None
             is_normal = None
             stream_url = None
+            stream_quality = None
+            stream_extra = {}
             try:
                 response = await client.get(f"https://live.douyin.com/{data.user_id}")
                 response.raise_for_status()
@@ -58,9 +60,31 @@ async def monitor(data: DouyinLiveData) -> None:
                         )
                     )
                 if is_normal:
-                    stream_url = state["cameraStore"]["mainCameraInfo"]["h265Stream"][
-                        "hls_pull_url"
-                    ]
+                    stream = state["cameraStore"]["mainCameraInfo"]["h265Stream"]
+                    hls = stream["hls_pull_url_map"]
+                    stream_quality = next(
+                        (
+                            quality
+                            for quality in (
+                                "ORIGIN",
+                                "FULL_HD1",
+                                "FULL_HD",
+                                "UHD",
+                                "HD1",
+                                "HD",
+                                "SD1",
+                                "SD2",
+                                "SD",
+                                "LD",
+                                "MD",
+                            )
+                            if hls.get(quality)
+                        ),
+                        None,
+                    )
+                    if stream_quality is not None:
+                        stream_url = hls[stream_quality]
+                        stream_extra = stream.get("extra", {})
             except (IndexError, KeyError, TypeError, ValueError):
                 log("Unsupported live page structure, retry after 60s")
                 await wait(data, 60.0)
@@ -74,7 +98,15 @@ async def monitor(data: DouyinLiveData) -> None:
                 continue
 
             log(f"live normal status: {is_normal}")
-            log("stream available" if stream_url else "stream unavailable")
+            if stream_url:
+                width = stream_extra.get("width") or "unknown"
+                height = stream_extra.get("height") or "unknown"
+                log(
+                    f"selected stream: quality={stream_quality} "
+                    f"resolution={width}x{height}"
+                )
+            else:
+                log("stream unavailable")
             await wait(data, 20.0)
 
         log("stop event is set")
