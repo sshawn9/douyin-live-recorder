@@ -47,6 +47,8 @@ version = "0.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },
+    { name = "m3u8" },
+    { name = "rich" },
     { name = "typer" },
 ]
 
@@ -59,6 +61,8 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "httpx", specifier = ">=0.28.1" },
+    { name = "m3u8", specifier = ">=6.0.0" },
+    { name = "rich", specifier = ">=15.0.0" },
     { name = "typer", specifier = ">=0.16.0" },
 ]
 
@@ -112,6 +116,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/cd/63/9496c57188a2ee585e0f1db071d75089a11e98aa86eb99d9d7618fc1edce/idna-3.18.tar.gz", hash = "sha256:ffb385a7e039654cef1ab9ef32c6fafe283c0c0467bba1d9029738ce4a14a848", size = 196711, upload-time = "2026-06-02T14:34:07.794Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1e/5e/d4e9f1a599fb8e573b7b87160658329fbf28d19eac2718f51fc3def3aa5a/idna-3.18-py3-none-any.whl", hash = "sha256:7f952cbe720b688055e3f87de14f5c3e5fdaa8bc3928985c4077ca689de849a2", size = 65455, upload-time = "2026-06-02T14:34:06.319Z" },
+]
+
+[[package]]
+name = "m3u8"
+version = "6.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/9b/a5/73697aaa99bb32b610adc1f11d46a0c0c370351292e9b271755084a145e6/m3u8-6.0.0.tar.gz", hash = "sha256:7ade990a1667d7a653bcaf9413b16c3eb5cd618982ff46aaff57fe6d9fa9c0fd", size = 42720, upload-time = "2024-08-07T11:20:06.606Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f8/31/50f3c38b38ff28635ff9c4a4afefddccc5f1b57457b539bdbdf75ce18669/m3u8-6.0.0-py3-none-any.whl", hash = "sha256:566d0748739c552dad10f8c87150078de6a0ec25071fa48e6968e96fc6dcba5d", size = 24133, upload-time = "2024-08-07T11:20:03.96Z" },
 ]
 
 [[package]]

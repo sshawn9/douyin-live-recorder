@@ -2,13 +2,12 @@ from __future__ import annotations
 
 import asyncio
 import shutil
-from pathlib import Path
 from typing import Annotated
 
 import typer
 
 from .data import DouyinLiveData
-from .run import run
+from .run import start
 
 app = typer.Typer(add_completion=False, no_args_is_help=True)
 
@@ -26,7 +25,7 @@ def record(
     )
 
     try:
-        asyncio.run(run(data))
+        asyncio.run(start(data))
     except RuntimeError as error:
         typer.echo(str(error), err=True)
         raise typer.Exit(1) from error

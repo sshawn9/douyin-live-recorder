@@ -1,5 +1,5 @@
 {
-  description = "Douyin live recorder and lossless video tools";
+  description = "Douyin live recorder";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -37,6 +37,8 @@
             build-system = [ pythonPackages.hatchling ];
             dependencies = [
               pythonPackages.httpx
+              pythonPackages.m3u8
+              pythonPackages.rich
               pythonPackages.typer
             ];
 
@@ -47,13 +49,9 @@
               in
               ''
                 wrapProgram $out/bin/douyin-live-recorder --prefix PATH : ${runtimePath}
-                wrapProgram $out/bin/video-tools --prefix PATH : ${runtimePath}
               '';
 
-            pythonImportsCheck = [
-              "douyin_live_recorder"
-              "video_tools"
-            ];
+            pythonImportsCheck = [ "douyin_live_recorder" ];
           };
         }
       );
@@ -68,11 +66,6 @@
             type = "app";
             program = nixpkgs.lib.getExe' package "douyin-live-recorder";
             meta.description = "Monitor and record a Douyin live stream";
-          };
-          video-tools = {
-            type = "app";
-            program = nixpkgs.lib.getExe' package "video-tools";
-            meta.description = "Inspect, repair, cut, and concatenate video files";
           };
         }
       );
