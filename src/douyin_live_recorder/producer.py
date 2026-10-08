@@ -30,7 +30,7 @@ async def produce_playlists(data: DouyinLiveData) -> None:
     )
     playlist_client = httpx.AsyncClient(
         headers=headers,
-        timeout=httpx.Timeout(2.0, connect=5.0),
+        timeout=httpx.Timeout(5.0, connect=5.0),
         follow_redirects=True,
     )
     async with page_client, playlist_client:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import Any
 
 import httpx
@@ -12,7 +13,6 @@ def parse_live_page(page: str) -> tuple[dict[str, Any], str]:
     push = "self.__pace_f.push("
     decoder = json.JSONDecoder()
     chunks = []
-    state = None
     position = 0
 
     while True:
@@ -24,14 +24,16 @@ def parse_live_page(page: str) -> tuple[dict[str, Any], str]:
         if item[0] != 1:
             continue
 
-        chunk = item[1]
-        chunks.append(chunk)
-        if chunk.startswith("c:"):
-            state = json.loads(chunk[2:])[3]["state"]
+        chunks.append(item[1])
 
-    if state is None:
-        raise ValueError("live page state is absent")
-    return state, "".join(chunks)
+    # Flight row IDs and script chunk boundaries can change between page renders.
+    flight = "".join(chunks)
+    for match in re.finditer(r'"state"\s*:\s*(?=\{)', flight):
+        state, _ = decoder.raw_decode(flight, match.end())
+        if isinstance(state, dict) and "roomStore" in state:
+            return state, flight
+
+    raise ValueError("live page state is absent")
 
 
 def get_declared_stream_params(
